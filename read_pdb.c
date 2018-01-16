@@ -38,7 +38,7 @@ int main(void) {
     ssize_t read;
     char **tokens;
     int atoms=0;
-    float *centre = calloc(3, sizeof(float));
+    double *centre = calloc(3, sizeof(float));
 
     pdb = fopen("3fe0.pdb", "r");
     if (pdb == NULL)
@@ -51,21 +51,26 @@ int main(void) {
         tokens = strsplit(line, ", \t\n");
         if(strcmp(tokens[0],"ATOM") ==0){
             temp = fopen ("a.pdb","a");
-            fprintf (temp, "%s     %s  %s  %s %s   %s       %s   %s  %s  %s %s           %s\n",
+            fprintf (temp, "%s  %5s  %-3s %3s %s %3s    %8s %7s %7s  %4s %5s           %s\n",
                     tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6],
                     tokens[7], tokens[8], tokens[9], tokens[10], tokens[11]);
             fclose (temp);
 
-            centre[0] += atoi(tokens[6]);
-            centre[1] += atoi(tokens[7]);
-            centre[2] += atoi(tokens[8]);
+            centre[0] += atof(tokens[6]);
+            centre[1] += atof(tokens[7]);
+            centre[2] += atof(tokens[8]);
             atoms++;
         }
         if (tokens != NULL)
             free(tokens);
     }
-
-    printf("%.3f\t%.3f\t%.3f\n",centre[0]/atoms, centre[2]/atoms, centre[3]/atoms );
+    temp = fopen ("a.pdb","a");
+    fprintf (temp, "%s  %5s  %-3s %3s %s %3s    %8.3f %7.3f %7.3f  %4s %5s           %s\n",
+                    "ATOM", "00000", "XXX", "XXX", "A", "000", centre[0]/atoms,
+                    centre[1]/atoms, centre[2]/atoms , "0.00", "00.00", "X");
+    fclose (temp);
+    
+    printf("%.3f\t%.3f\t%.3f\n",centre[0]/atoms, centre[1]/atoms, centre[2]/atoms );
 
     if (line != NULL) free(line);
     return EXIT_SUCCESS;
