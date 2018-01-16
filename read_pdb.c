@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define token_count 12
+#define token_count 12					//Number of Columns
 
 char **strsplit(const char* pdb_line, const char* delim) {
     char *s = strdup(pdb_line);      			//Create a copy of the string
@@ -50,7 +50,7 @@ int main(void) {
         tokens = strsplit(line, " \t\n");
         if(strcmp(tokens[0],"ATOM") ==0){
             temp = fopen ("a.pdb","a");
-            fprintf (temp, "%s  %5s  %-3s %3s %s %3s    %8s %7s %7s  %4s %5s           %s\n",	//Write to file
+            fprintf (temp, "%s  %5s  %-3s %3s %s%4s    %8s%8s%8s  %4s %5s           %s\n",	//Write to file
                     tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6],
                     tokens[7], tokens[8], tokens[9], tokens[10], tokens[11]);
             fclose (temp);
@@ -64,8 +64,8 @@ int main(void) {
             free(tokens);
     }
     temp = fopen ("a.pdb","a");
-    fprintf (temp, "%s  %5s  %-3s %3s %s %3s    %8.3f %7.3f %7.3f  %4s %5s           %s\n",	//Append centre coordinate
-                    "ATOM", "00000", "XXX", "XXX", "A", "000", centre[0]/atoms,
+    fprintf (temp, "%s  %5s  %-3s %3s %s%4s    %8.3f%8.3f%8.3f  %4s %5s           %s\n",	//Append centre coordinate
+                    "ATOM", "99999", "Zn", "Zn", "Z", "999", centre[0]/atoms,
                     centre[1]/atoms, centre[2]/atoms , "0.00", "00.00", "X");
     fclose (temp);
     
