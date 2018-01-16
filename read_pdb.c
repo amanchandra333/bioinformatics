@@ -38,7 +38,7 @@ int main(void) {
     ssize_t read;
     char **tokens;
     int atoms=0;
-    double *centre = calloc(3, sizeof(float));
+    double *centre = calloc(3, sizeof(double));
 
     pdb = fopen("3fe0.pdb", "r");
     if (pdb == NULL)
@@ -71,7 +71,8 @@ int main(void) {
     fclose (temp);
     
     printf("%.3f\t%.3f\t%.3f\n",centre[0]/atoms, centre[1]/atoms, centre[2]/atoms );
-
+    
+    free(centre);
     if (line != NULL) free(line);
     return EXIT_SUCCESS;
 }
