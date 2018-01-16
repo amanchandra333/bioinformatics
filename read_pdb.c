@@ -5,28 +5,27 @@
 #define token_count 12
 
 char **strsplit(const char* pdb_line, const char* delim) {
-    char *s = strdup(pdb_line);      //create a copy of the string
+    char *s = strdup(pdb_line);      			//Create a copy of the string
 
     size_t allocated = 1, used =0;
     char **tokens = calloc(allocated, sizeof(char*));
     char *token, *strtok_ctx;
-    for (token = strtok_r(s, delim, &strtok_ctx);
+    for (token = strtok_r(s, delim, &strtok_ctx);	//Split input string
             token != NULL;
             token = strtok_r(NULL, delim, &strtok_ctx)) {
-        if (used == allocated) {
-            allocated += 10;
+        if (used == allocated) {			//Increase allocated space if needed
+            allocated *= 2;
             tokens = realloc(tokens, allocated * sizeof(char*));
         }
         tokens[used++] = strdup(token);
     }
-    // free memory
-    if (used == 0) {
+
+    if (used == 0) {					//Free Memory
         free(tokens);
         tokens = NULL;
     } else {
         tokens = realloc(tokens, used * sizeof(char*));
     }
-
     free(s);
     return tokens;
 }
@@ -40,18 +39,18 @@ int main(void) {
     int atoms=0;
     double *centre = calloc(3, sizeof(double));
 
-    pdb = fopen("3fe0.pdb", "r");
+    pdb = fopen("3fe0.pdb", "r");								//Check if file is valid
     if (pdb == NULL)
         exit(EXIT_FAILURE);
 
     temp = fopen ("a.pdb","w");
     fclose (temp);
 
-    while ((read = getline(&line, &len, pdb)) != -1) {
-        tokens = strsplit(line, ", \t\n");
+    while ((read = getline(&line, &len, pdb)) != -1) {						//Read one line at a time
+        tokens = strsplit(line, " \t\n");
         if(strcmp(tokens[0],"ATOM") ==0){
             temp = fopen ("a.pdb","a");
-            fprintf (temp, "%s  %5s  %-3s %3s %s %3s    %8s %7s %7s  %4s %5s           %s\n",
+            fprintf (temp, "%s  %5s  %-3s %3s %s %3s    %8s %7s %7s  %4s %5s           %s\n",	//Write to file
                     tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6],
                     tokens[7], tokens[8], tokens[9], tokens[10], tokens[11]);
             fclose (temp);
@@ -65,7 +64,7 @@ int main(void) {
             free(tokens);
     }
     temp = fopen ("a.pdb","a");
-    fprintf (temp, "%s  %5s  %-3s %3s %s %3s    %8.3f %7.3f %7.3f  %4s %5s           %s\n",
+    fprintf (temp, "%s  %5s  %-3s %3s %s %3s    %8.3f %7.3f %7.3f  %4s %5s           %s\n",	//Append centre coordinate
                     "ATOM", "00000", "XXX", "XXX", "A", "000", centre[0]/atoms,
                     centre[1]/atoms, centre[2]/atoms , "0.00", "00.00", "X");
     fclose (temp);
