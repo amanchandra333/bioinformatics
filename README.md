@@ -1,3 +1,3 @@
-#Bioinformatics Lab
+# Bioinformatics Lab
 
-To compile: ```gcc -std=gnu11 -g -o split read_pdb.c```
+Compile with ```gnu11```
