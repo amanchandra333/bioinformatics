@@ -80,7 +80,7 @@ int main(void) {
     int p;
     for(p=0; p<5; p++)
 	percent[p]=comp[p]*100/molecules;
-    printf("Positive: %f %% \nNegetive: %f %%\nAromatic: %f %%\nNeutral Pole: %f %%\nHydrophobic: %f %%\n",
+    printf("Positive\t:\t%.2f %% \nNegetive\t:\t%.2f %%\nAromatic\t:\t%.2f %%\nNeutral Pole\t:\t%.2f %%\nHydrophobic\t:\t%.2f %%\n",
 		percent[0], percent[1], percent[2], percent[3], percent[4]);
 
     free(comp); free(percent);
