@@ -119,6 +119,9 @@ int main(void) {
     int i;
     double main=0, side=0;
     int main_count=0, side_count=0;
+    int prev_res=3, res_count=0;
+    char * max_res;
+    double max_bfactor=0, res_bfactor;
     for(i=0; i<used_a; i++){
         if(!strcmp(aa[i].atom_name,"N") || !strcmp(aa[i].atom_name,"CA") ||
 		!strcmp(aa[i].atom_name,"C") || !strcmp(aa[i].atom_name,"O")){
@@ -128,9 +131,22 @@ int main(void) {
 	else{
 	    side_count++;
 	    side+=aa[i].bfactor;
+	    if(aa[i].res==prev_res){
+		res_bfactor+=aa[i].bfactor;
+		res_count++;
+	    }
+	    else{
+		if(max_bfactor<res_bfactor/res_count){
+		    max_bfactor=res_bfactor/res_count;
+		    max_res = strdup(aa[i].res_name);
+		}
+		res_bfactor=0;
+		res_count=0;
+	    }
+	    prev_res=aa[i].res;
 	}
     }
-    printf("A Chain\t\tMain Chain : %f\t\tSide Chain : %f\n", main/main_count, side/side_count);
+    printf("A Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : \n", main/main_count, side/side_count, max_res, max_bfactor);
     main=side=0;
     main_count=side_count=0;
 
@@ -145,7 +161,7 @@ int main(void) {
             side+=ab[i].bfactor;
         }
     }
-    printf("B Chain\t\tMain Chain : %f\t\tSide Chain : %f\n", main/main_count, side/side_count);
+    printf("A Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : \n", main/main_count, side/side_count, max_res, max_bfactor);
     main=side=0;
     main_count=side_count=0;
 
@@ -160,7 +176,7 @@ int main(void) {
             side+=ac[i].bfactor;
         }
     }
-    printf("C Chain\t\tMain Chain : %f\t\tSide Chain : %f\n", main/main_count, side/side_count);
+    printf("A Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : \n", main/main_count, side/side_count, max_res, max_bfactor);
     main=side=0;
     main_count=side_count=0;
 
@@ -175,7 +191,7 @@ int main(void) {
             side+=ad[i].bfactor;
         }
     }
-    printf("D Chain\t\tMain Chain : %f\t\tSide Chain : %f\n", main/main_count, side/side_count);
+    printf("A Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : \n", main/main_count, side/side_count, max_res, max_bfactor);
     main=side=0;
     main_count=side_count=0;
 
