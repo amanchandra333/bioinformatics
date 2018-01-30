@@ -68,7 +68,6 @@ int main(void) {
     fclose (temp2);
 
     size_t allocated_a = 1, allocated_r=1, used_a =0, used_r=0;
-    bool *check = calloc(20000, sizeof(bool));
     struct pose *aa = calloc(allocated_a, sizeof(struct pose));
     struct pose *rna = calloc(allocated_r, sizeof(struct pose));
 
@@ -110,6 +109,7 @@ int main(void) {
     if (line != NULL) free(line);
     fclose(pdb);
 
+    bool *check = calloc(used_a+used_r, sizeof(bool));
     int i, j;
     for(i=0; i<used_a; i++){
         for(j=0; j<used_r; j++){
