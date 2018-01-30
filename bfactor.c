@@ -120,35 +120,43 @@ int main(void) {
     double main=0, side=0;
     int main_count=0, side_count=0;
     int prev_res=3, res_count=0;
-    char * max_res;
-    double max_bfactor=0, res_bfactor;
+    char *max_res, *min_res;
+    double max_bfactor=0, min_bfactor=150, res_bfactor;
     for(i=0; i<used_a; i++){
         if(!strcmp(aa[i].atom_name,"N") || !strcmp(aa[i].atom_name,"CA") ||
 		!strcmp(aa[i].atom_name,"C") || !strcmp(aa[i].atom_name,"O")){
-	    main_count++;
-	    main+=aa[i].bfactor;
+    	    main_count++;
+    	    main+=aa[i].bfactor;
         }
-	else{
-	    side_count++;
-	    side+=aa[i].bfactor;
-	    if(aa[i].res==prev_res){
-		res_bfactor+=aa[i].bfactor;
-		res_count++;
-	    }
 	    else{
-		if(max_bfactor<res_bfactor/res_count){
-		    max_bfactor=res_bfactor/res_count;
-		    max_res = strdup(aa[i].res_name);
-		}
-		res_bfactor=0;
-		res_count=0;
-	    }
-	    prev_res=aa[i].res;
-	}
+    	    side_count++;
+    	    side+=aa[i].bfactor;
+    	    if(aa[i].res==prev_res){
+        		res_bfactor+=aa[i].bfactor;
+        		res_count++;
+    	    }
+    	    else{
+        		if(max_bfactor<(res_bfactor/res_count)){
+        		    max_bfactor=res_bfactor/res_count;
+        		    max_res = strdup(aa[i-9].res_name);
+        		}
+                if(min_bfactor>(res_bfactor/res_count)){
+        		    min_bfactor=res_bfactor/res_count;
+        		    min_res = strdup(aa[i-5].res_name);
+        		}
+        		res_bfactor=aa[i].bfactor;
+        		res_count=1;
+        	}
+    	    prev_res=aa[i].res;
+	   }
     }
-    printf("A Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : \n", main/main_count, side/side_count, max_res, max_bfactor);
+    printf("A Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : %s, %f\n",
+            main/main_count, side/side_count, max_res, max_bfactor, min_res, min_bfactor);
+
     main=side=0;
     main_count=side_count=0;
+    prev_res=1; res_count=0;
+    max_bfactor=0; min_bfactor=150; res_bfactor=0;
 
     for(i=0; i<used_b; i++){
         if(!strcmp(ab[i].atom_name,"N") || !strcmp(ab[i].atom_name,"CA") ||
@@ -156,14 +164,36 @@ int main(void) {
             main_count++;
             main+=ab[i].bfactor;
         }
-	else{ 
+	    else{
             side_count++;
             side+=ab[i].bfactor;
+            if(ab[i].res==prev_res){
+        		res_bfactor+=ab[i].bfactor;
+        		res_count++;
+    	    }
+    	    else{
+        		if(max_bfactor<(res_bfactor/res_count)){
+        		    max_bfactor=res_bfactor/res_count;
+        		    max_res = strdup(ab[i-5].res_name);
+                    printf("%d\n",prev_res );
+        		}
+                if(min_bfactor>(res_bfactor/res_count)){
+        		    min_bfactor=res_bfactor/res_count;
+        		    min_res = strdup(ab[i-5].res_name);
+        		}
+        		res_bfactor=ab[i].bfactor;
+        		res_count=1;
+        	}
+    	    prev_res=ab[i].res;
         }
     }
-    printf("A Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : \n", main/main_count, side/side_count, max_res, max_bfactor);
+    printf("B Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : %s, %f\n",
+            main/main_count, side/side_count, max_res, max_bfactor, min_res, min_bfactor);
+
     main=side=0;
     main_count=side_count=0;
+    prev_res=4; res_count=0;
+    max_bfactor=0; min_bfactor=150; res_bfactor=0;
 
     for(i=0; i<used_c; i++){
         if(!strcmp(ac[i].atom_name,"N") || !strcmp(ac[i].atom_name,"CA") ||
@@ -171,14 +201,35 @@ int main(void) {
             main_count++;
             main+=ac[i].bfactor;
         }
-	else{ 
+	    else{
             side_count++;
             side+=ac[i].bfactor;
+            if(ac[i].res==prev_res){
+        		res_bfactor+=ac[i].bfactor;
+        		res_count++;
+    	    }
+    	    else{
+        		if(max_bfactor<(res_bfactor/res_count)){
+        		    max_bfactor=res_bfactor/res_count;
+        		    max_res = strdup(ac[i-5].res_name);
+        		}
+                if(min_bfactor>(res_bfactor/res_count)){
+        		    min_bfactor=res_bfactor/res_count;
+        		    min_res = strdup(ac[i-5].res_name);
+        		}
+        		res_bfactor=ac[i].bfactor;
+        		res_count=1;
+        	}
+    	    prev_res=ac[i].res;
         }
     }
-    printf("A Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : \n", main/main_count, side/side_count, max_res, max_bfactor);
+    printf("C Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : %s, %f\n",
+            main/main_count, side/side_count, max_res, max_bfactor, min_res, min_bfactor);
+
     main=side=0;
     main_count=side_count=0;
+    prev_res=1; res_count=0;
+    max_bfactor=0; min_bfactor=150; res_bfactor=0;
 
     for(i=0; i<used_d; i++){
         if(!strcmp(ad[i].atom_name,"N") || !strcmp(ad[i].atom_name,"CA") ||
@@ -186,14 +237,30 @@ int main(void) {
             main_count++;
             main+=ad[i].bfactor;
         }
-	else{ 
+	    else{
             side_count++;
             side+=ad[i].bfactor;
+            if(ad[i].res==prev_res){
+        		res_bfactor+=ad[i].bfactor;
+        		res_count++;
+    	    }
+    	    else{
+        		if(max_bfactor<(res_bfactor/res_count)){
+        		    max_bfactor=res_bfactor/res_count;
+        		    max_res = strdup(ad[i-5].res_name);
+        		}
+                if(min_bfactor>(res_bfactor/res_count)){
+        		    min_bfactor=res_bfactor/res_count;
+        		    min_res = strdup(ad[i-5].res_name);
+        		}
+        		res_bfactor=ad[i].bfactor;
+        		res_count=1;
+        	}
+    	    prev_res=ad[i].res;
         }
     }
-    printf("A Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : \n", main/main_count, side/side_count, max_res, max_bfactor);
-    main=side=0;
-    main_count=side_count=0;
+    printf("D Chain\t\tMain Chain : %f\t\tSide Chain : %f\t\tMost : %s, %f\t\tLeast : %s, %f\n",
+            main/main_count, side/side_count, max_res, max_bfactor, min_res, min_bfactor);
 
     return EXIT_SUCCESS;
 }
