@@ -38,52 +38,66 @@ int main(void) {
     FILE** aa = malloc(sizeof(FILE*) * CHAINS);
     char **line = calloc((CHAINS+1), sizeof(char*));
     size_t len, len_res;
-    ssize_t read, read_res;
+    ssize_t *read = malloc(sizeof(size_t) * (CHAINS+1));
     char **tokens, **tokens_res;
     int token_count, token_count_res;
+    int i;
+    char buffer[15], chain[2];
+    float *area = calloc((CHAINS), sizeof(float));
 
-    asa[0] = fopen("asa/pdb.asa", "r");								//Check if file is valid
+    asa[0] = fopen("asa/pdb.asa", "r");	    							//Check if file is valid
     if (asa[0] == NULL)
         exit(EXIT_FAILURE);
+    for(i=0;i<CHAINS;i++){
+        snprintf(buffer, sizeof(char) * 15, "asa/%c.asa", i+65);
+        asa[i+1] = fopen(buffer, "r");								//Check if file is valid
+        if (asa[i+1] == NULL)
+            exit(EXIT_FAILURE);
+    }
 
     struct stat st = {0};
     if (stat("./asa_out", &st) == -1) {
         mkdir("./asa_out", 0700);
     }
 
-    char buffer[15], chain[2];
-    int i;
     for(i=0; i<CHAINS; i++){
         snprintf(buffer, sizeof(char) * 15, "asa_out/%c.asa", i+65);
         aa[i] = fopen (buffer,"w");
         fclose (aa[i]);
     }
 
-    while ((read = getline(&line[0], &len, asa[0])) != -1) {			                        //Read one line at a time
+    while ((read[0] = getline(&line[0], &len, asa[0])) != -1) {			                        //Read one line at a time
     	tokens = strsplit(line[0], " \t\n", &token_count);
-	if(token_count==11){
-	    for(i=0; i<CHAINS; i++){
-	        snprintf(chain, sizeof(char) * 2, "%c", i+65);
-	        if(!strcmp(tokens[4],chain)){
-		    while ((read_res = getline(&line[i], &len_res, asa[i])) != -1){
-			tokens_res = strsplit(line[i], " \t\n", &token_count_res);
- 			if(token_count==11){
-			    if(!strcmp(tokens[0],tokens_res[0]))
-		            /*snprintf(buffer, sizeof(char) * 15, "asa_out/%c.pdb", i+65);
-		            aa[i] = fopen (buffer,"a");
-                            fprintf (aa[i], "%s  %5s  %-3s %3s %s%4s    %8s%8s%8s  %4s %5s           %s\n",	//Write to file
-                                tokens[0], tokens[1], tokens[2], tokens[3], tokens[4], tokens[5], tokens[6],
-                                tokens[7], tokens[8], tokens[9], tokens[10], tokens[11]);
-		            fclose (aa[i]);*/
-			}
-		    }
+    	if(token_count==11){
+    	    for(i=0; i<CHAINS; i++){
+    	        snprintf(chain, sizeof(char) * 2, "%c", i+65);
+    	        if(!strcmp(tokens[3],chain)){
+        		    while ((read[i+1] = getline(&line[i+1], &len_res, asa[i+1])) != -1){
+        			    tokens_res = strsplit(line[i+1], " \t\n", &token_count_res);
+         		    	if(token_count_res==11){
+        			        if(!strcmp(tokens[0],tokens_res[0])){
+                                if(strcmp(tokens[6],tokens_res[6])){
+                                    area[i] += atof(tokens_res[6])-atof(tokens[6]);
+                                    snprintf(buffer, sizeof(char) * 15, "asa_out/%c.asa", i+65);
+                                    aa[i] = fopen (buffer,"a");
+                                    fprintf (aa[i], "%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%7.4f\n",	      //Write to file
+                                        tokens_res[0], tokens_res[1], tokens_res[2], tokens_res[3],
+                                        tokens_res[4], tokens_res[5], (atof(tokens_res[6])-atof(tokens[6])));
+                                    fclose (aa[i]);
+                                }
+                                break;
+                            }
+        			    }
+        		    }
                     break;
                 }
             }
-	}
+    	}
         if (tokens != NULL)
             free(tokens);
     }
+    printf("Interface Area:\n\tChain A : %7.4f\t\tChain B : %7.4f\n\tChain C : %7.4f\t\tChain D : %7.4f\n\tChain E : %7.4f\t\tChain F : %7.4f\n\tChain G : %7.4f\t\tChain H : %7.4f\n",
+            area[0], area[1], area[2], area[3], area[4], area[5], area[6], area[7]);
     if (line[0] != NULL) free(line[0]);
     fclose(asa[0]);
 
