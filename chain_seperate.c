@@ -47,8 +47,8 @@ int main(void) {
         exit(EXIT_FAILURE);
 
     struct stat st = {0};
-    if (stat("/pops", &st) == -1) {
-        mkdir("/pops", 0700);
+    if (stat("./pops", &st) == -1) {
+        mkdir("./pops", 0700);
     }
 
     char buffer[15], chain[2];
