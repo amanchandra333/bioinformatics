@@ -175,7 +175,6 @@ int main(void) {
         		if(max_bfactor<(res_bfactor/res_count)){
         		    max_bfactor=res_bfactor/res_count;
         		    max_res = strdup(ab[i-5].res_name);
-                    printf("%d\n",prev_res );
         		}
                 if(min_bfactor>(res_bfactor/res_count)){
         		    min_bfactor=res_bfactor/res_count;
