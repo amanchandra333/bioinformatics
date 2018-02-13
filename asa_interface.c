@@ -76,13 +76,13 @@ int main(void) {
         			    tokens_res = strsplit(line[i+1], " \t\n", &token_count_res);
          		    	if(token_count_res==11){
         			        if(!strcmp(tokens[0],tokens_res[0])){
-                                if(strcmp(tokens[6],tokens_res[6])){
-                                    area[i] += atof(tokens_res[6])-atof(tokens[6]);
+                                if(strcmp(tokens[5],tokens_res[5])){
+                                    area[i] += atof(tokens_res[5])-atof(tokens[5]);
                                     snprintf(buffer, sizeof(char) * 15, "asa_out/%c.asa", i+65);
                                     aa[i] = fopen (buffer,"a");
                                     fprintf (aa[i], "%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%7.4f\n",	      //Write to file
                                         tokens_res[0], tokens_res[1], tokens_res[2], tokens_res[3],
-                                        tokens_res[4], tokens_res[5], (atof(tokens_res[6])-atof(tokens[6])));
+                                        tokens_res[4], tokens_res[5], (atof(tokens_res[5])-atof(tokens[5])));
                                     fclose (aa[i]);
                                 }
                                 break;

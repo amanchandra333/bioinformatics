@@ -54,19 +54,19 @@ int main(void) {
 	    }
 
 	    else{
-                if(!strcmp(tokens[3], "ARG") || !strcmp(tokens[3], "LYS"))
-		    comp[0]++;
+            if(!strcmp(tokens[3], "ARG") || !strcmp(tokens[3], "LYS"))
+		          comp[0]++;
 	        if(!strcmp(tokens[3], "ASP") || !strcmp(tokens[3], "GLU"))
-		    comp[1]++;
+		          comp[1]++;
 	        if(!strcmp(tokens[3], "TYR") || !strcmp(tokens[3], "TRP") || !strcmp(tokens[3], "PHE"))
-                    comp[2]++;
+                  comp[2]++;
 	         if(!strcmp(tokens[3], "SER") || !strcmp(tokens[3], "THR") || !strcmp(tokens[3], "HIS") || 
 		    !strcmp(tokens[3], "ASN") || !strcmp(tokens[3], "GLN") || !strcmp(tokens[3], "MET") ||
 		    !strcmp(tokens[3], "CYS"))
-                    comp[3]++;
-	         if(!strcmp(tokens[3], "ILE") || !strcmp(tokens[3], "LEU") || !strcmp(tokens[3], "VAL") || 
+                  comp[3]++;
+	        if(!strcmp(tokens[3], "ILE") || !strcmp(tokens[3], "LEU") || !strcmp(tokens[3], "VAL") || 
 		    !strcmp(tokens[3], "PRO") || !strcmp(tokens[3], "ALA") || !strcmp(tokens[3], "GLY"))
-                    comp[4]++;
+                  comp[4]++;
 
 	        prev_num=num;
 	        molecules++;
