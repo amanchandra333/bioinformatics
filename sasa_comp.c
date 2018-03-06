@@ -110,5 +110,11 @@ int main(void) {
         }
     }
 
+    for(i=0; i<used_a; i++){
+        if(atoms[i].check){
+            
+        }
+    }
+
     return EXIT_SUCCESS;
 }
