@@ -1,4 +1,4 @@
-//compile with -std=gnu11
+//compile with -std=gnu11 -lm
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

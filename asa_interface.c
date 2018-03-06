@@ -35,7 +35,7 @@ char **strsplit(const char* pdb_line, const char* delim, int * token_count) {
 
 int main(void) {
     FILE** asa = malloc(sizeof(FILE*) * (CHAINS+1));
-    FILE** aa = malloc(sizeof(FILE*) * CHAINS);
+    FILE** aa = malloc(sizeof(FILE*) * (CHAINS+1));
     char **line = calloc((CHAINS+1), sizeof(char*));
     size_t len, len_res;
     ssize_t *read = malloc(sizeof(size_t) * (CHAINS+1));
@@ -65,6 +65,8 @@ int main(void) {
         aa[i] = fopen (buffer,"w");
         fclose (aa[i]);
     }
+    aa[CHAINS]=fopen("asa_out/concatenate.asa", "w");
+    fclose (aa[CHAINS]);
 
     while ((read[0] = getline(&line[0], &len, asa[0])) != -1) {			                        //Read one line at a time
     	tokens = strsplit(line[0], " \t\n", &token_count);
@@ -80,10 +82,15 @@ int main(void) {
                                     area[i] += atof(tokens_res[5])-atof(tokens[5]);
                                     snprintf(buffer, sizeof(char) * 15, "asa_out/%c.asa", i+65);
                                     aa[i] = fopen (buffer,"a");
+                                    aa[CHAINS]=fopen("asa_out/concatenate.asa", "a");
                                     fprintf (aa[i], "%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%7.4f\n",	      //Write to file
                                         tokens_res[0], tokens_res[1], tokens_res[2], tokens_res[3],
                                         tokens_res[4], tokens_res[5], (atof(tokens_res[5])-atof(tokens[5])));
+                                    fprintf (aa[CHAINS], "%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%7.4f\n",	      //Write to file
+                                        tokens_res[0], tokens_res[1], tokens_res[2], tokens_res[3],
+                                        tokens_res[4], tokens_res[5], (atof(tokens_res[5])-atof(tokens[5])));
                                     fclose (aa[i]);
+                                    fclose (aa[CHAINS]);
                                 }
                                 break;
                             }

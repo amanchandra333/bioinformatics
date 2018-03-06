@@ -68,9 +68,9 @@ int main(void) {
                     "ATOM", "99999", "Zn", "Zn", "Z", "999", centre[0]/atoms,
                     centre[1]/atoms, centre[2]/atoms , "0.00", "00.00", "X");
     fclose (temp);
-    
+
     printf("%.3f\t%.3f\t%.3f\n",centre[0]/atoms, centre[1]/atoms, centre[2]/atoms );
-    
+
     free(centre);
     if (line != NULL) free(line);
     return EXIT_SUCCESS;

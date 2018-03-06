@@ -39,7 +39,7 @@ char **strsplit(const char* pdb_line, const char* delim, int * token_count) {
 
 int main(void) {
     FILE * pdb;
-    FILE * temp;
+    // FILE * temp;
     char *line = NULL;
     size_t len;
     ssize_t read;
@@ -50,8 +50,8 @@ int main(void) {
     if (pdb == NULL)
         exit(EXIT_FAILURE);
 
-    temp = fopen ("bfactor.pdb","w");
-    fclose (temp);
+    // temp = fopen ("bfactor.pdb","w");
+    // fclose (temp);
 
     size_t allocated_a = 1, used_a =0;
     size_t allocated_b = 1, used_b =0;
