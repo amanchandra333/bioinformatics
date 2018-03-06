@@ -56,13 +56,12 @@ int main(void) {
     size_t allocated_a = 1, used_a=1;
     struct pose *atoms = calloc(allocated_a, sizeof(struct pose));
 
-    asa = fopen("asa_out/concatenate.asa", "r");								//Check if file is valid
-    if (asa == NULL)
-        exit(EXIT_FAILURE);
-
-    pdb = fopen("5un8.pdb", "r");								//Check if file is valid
-    if (pdb == NULL)
-        exit(EXIT_FAILURE);
+    for(i=0;i<CHAINS;i++){
+        snprintf(buffer, sizeof(char) * 15, "pops/%c.pdb", i+65);
+        asa[i] = fopen(buffer, "r");                              //Check if file is valid
+        if (asa[i] == NULL)
+            exit(EXIT_FAILURE);
+    }
 
     while ((read_asa = getline(&line_asa, &len_asa, asa)) != -1) {						//Read one line at a time
         tokens_asa = strsplit(line_asa, " \t\n", &token_count_asa);
