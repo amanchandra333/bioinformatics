@@ -10,7 +10,7 @@
 
 int max(int a, int b, int c, int **arrow, int i, int j){
 	int k=0, val=0;
-	if(a==b) k=a;
+	if(a>=b) k=a;
 	else k=b;
 	if(c>=k) k=c;
 
@@ -80,7 +80,7 @@ void find_seq(char* X, char* Y, int m, int n){
 	buffer1[k+1] = '\0';
 	buffer2[k+1] = '\0';
 	i=m; j=n;
-	int t=0,p=m;
+	int t=0,p=k-1;
 	while(i && j){
 		if(arrow[i][j] ==4){
 			i-=1; j-=1; t=0;
@@ -99,7 +99,7 @@ void find_seq(char* X, char* Y, int m, int n){
 			p--;
 		}
 		else if(t==1){
-			printf("  %c \n", X[i]);
+			printf(" %c \n", X[i]);
 			buffer1[p] = X[i];
 			buffer2[p] = ' ';
 			p--;
